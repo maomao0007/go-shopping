@@ -44,3 +44,10 @@ npm start
 - Product Detail: Click on any product to view details
 - Wishlist: Save your favorite items
 - Cart: Manage your shopping cart
+
+## Screenshot
+[Wishlist.pdf](https://github.com/user-attachments/files/18622108/Wishlist.pdf)
+[Cart.pdf](https://github.com/user-attachments/files/18622110/Cart.pdf)
+
+
+
