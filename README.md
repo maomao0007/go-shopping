@@ -46,8 +46,8 @@ npm start
 - Cart: Manage your shopping cart
 
 ## Screenshot
-[Wishlist.pdf](https://github.com/user-attachments/files/18622108/Wishlist.pdf)
-[Cart.pdf](https://github.com/user-attachments/files/18622110/Cart.pdf)
+![Wishlist](https://github.com/user-attachments/assets/ca1780a7-ea40-4ee3-bfe4-8a545e7b9871)
+![Cart](https://github.com/user-attachments/assets/fe72a76f-b2a7-4ed6-885a-17a4529f704c)
 
 
 
