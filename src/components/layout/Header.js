@@ -6,6 +6,7 @@ import { ProductContext } from "../../contexts/ProductContext";
 export const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { cart = [], favorites = {} } = useContext(ProductContext);
+  const isAuthenticated = false;
 
   return (
     <header className="bg-white shadow-md relative">
@@ -30,38 +31,42 @@ export const Header = () => {
           </div>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-6">
-            <Link
-              to="/account"
-              className="hover:text-blue-500 transition-colors"
-              title="My Account"
-            >
-              <User className="h-5 w-5 sm:h-6 sm:w-6" />
-            </Link>
-            <Link
-              to="/favorite"
-              className="hover:text-blue-500 transition-colors"
-              title="Favorite"
-            >
-              <Heart
-                className="h-5 w-5 sm:h-6 sm:w-6"
-                color="pink"
-                fill={Object.values(favorites).some((v) => v) ? "pink" : "none"}
-              />
-            </Link>
-            <Link
-              to="/cart"
-              className="relative hover:text-blue-500 transition-colors"
-              title="Shopping Cart"
-            >
-              <ShoppingCart className="h-5 w-5 sm:h-6 sm:w-6" />
-              {cart.length > 0 && (
-                <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-4 w-4 sm:h-5 sm:w-5 flex items-center justify-center">
-                  {cart.length}
-                </span>
-              )}
-            </Link>
-          </div>
+          {isAuthenticated ? (
+            <div className="hidden md:flex items-center space-x-6">
+              <Link
+                to="/account"
+                className="hover:text-blue-500 transition-colors"
+                title="My Account"
+              >
+                <User className="h-5 w-5 sm:h-6 sm:w-6" />
+              </Link>
+              <Link
+                to="/favorite"
+                className="hover:text-blue-500 transition-colors"
+                title="Favorite"
+              >
+                <Heart
+                  className="h-5 w-5 sm:h-6 sm:w-6"
+                  color="pink"
+                  fill={
+                    Object.values(favorites).some((v) => v) ? "pink" : "none"
+                  }
+                />
+              </Link>
+              <Link
+                to="/cart"
+                className="relative hover:text-blue-500 transition-colors"
+                title="Shopping Cart"
+              >
+                <ShoppingCart className="h-5 w-5 sm:h-6 sm:w-6" />
+                {cart.length > 0 && (
+                  <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-4 w-4 sm:h-5 sm:w-5 flex items-center justify-center">
+                    {cart.length}
+                  </span>
+                )}
+              </Link>
+            </div>
+          ) : null}
 
           {/* Mobile Menu Button */}
           <button
@@ -69,17 +74,20 @@ export const Header = () => {
             onClick={() => setIsMenuOpen(!isMenuOpen)}
             aria-label="Toggle menu"
           >
-            {isMenuOpen ? (
-              <X className="h-6 w-6" />
-            ) : (
-              <Menu className="h-6 w-6" />
-            )}
+            {isAuthenticated ? (
+              isMenuOpen ? (
+                <X className="h-6 w-6" />
+              ) : (
+                <Menu className="h-6 w-6" />
+              )
+            ) : null}
           </button>
         </div>
       </div>
 
       {/* Mobile Navigation Menu */}
-      {isMenuOpen && (
+
+      {isAuthenticated && isMenuOpen && (
         <div className="md:hidden absolute top-full left-0 right-0 bg-white border-t border-gray-200 shadow-lg z-50">
           <nav className="max-w-7xl mx-auto px-4 py-3">
             <ul className="space-y-4">
