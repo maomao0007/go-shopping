@@ -1,42 +1,67 @@
 import React, { useState } from "react";
-import axios from "axios";
 import api from "../../api";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom"; 
 
 function Login() {
+  const navigate = useNavigate(); 
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
+
+   const [error, setError] = useState("");
+   const [success, setSuccess] = useState("");
 
   const handleChange = (e) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
     });
-  };
+    setError("");
+    setSuccess("");
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError("");
+    setSuccess("");
 
      if (!formData.email || !formData.password) {
-       console.error("Email and password are required");
+       setError("Email and password are required");
+       return;
+     }
+
+     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+     if (!emailRegex.test(formData.email)) {
+       setError("Please enter a valid email address");
        return;
      }
 
     try {
-      const response = await axios.post(
-        "api/auth/login",
+      const response = await api.post(
+        "/api/auth/login",
         formData
       );
 
-      console.log("Login successful:", response.data);
+        if (response.data.token) {
+          localStorage.setItem("token", response.data.token);
+        }
+        if (response.data.user) {
+          localStorage.setItem("user", JSON.stringify(response.data.user));
+        }
+
+      if (response.data.status === "success") {
+      setSuccess("Login successful! Redirecting...");
+      
+      setTimeout(() => navigate("/product"), 1500);
+      }
+
     } catch (error) {
        if (error.response?.data?.message === "Invalid credentials") {
-            console.error("Email or password was incorrect");
-        } else {
-            console.error('Login failed:', error.response?.data);
-        }
+         setError("Email or password was incorrect");
+       } else {
+         setError("Login failed:", error.response.message);
+       }
     }
   };
 
@@ -50,6 +75,18 @@ function Login() {
             Login
           </h2>{" "}
         </div>
+
+        {success && (
+          <div className="rounded-md bg-green-50 p-4 mb-4">
+            <div className="text-sm text-green-700">{success}</div>
+          </div>
+        )}
+
+        {error && (
+          <div className="rounded-md bg-red-50 p-4 mb-4">
+            <div className="text-sm text-red-700">{error}</div>
+          </div>
+        )}
 
         <form onSubmit={handleSubmit}>
           <input
