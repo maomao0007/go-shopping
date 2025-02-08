@@ -13,58 +13,67 @@ import Login from "./components/auth/Login";
 import Register from "./components/auth/Register";
 import NotFound from "./components/NotFound";
 import React, { useEffect } from "react";
-
-import api from "./api";
+import { AuthProvider, useAuth } from "./contexts/AuthContext";
 
 function App() {
-  const isAuthenticated = false;
+
+  const ProtectedRoute = ({ children }) => {
+    const { isAuthenticated } = useAuth();
+    return isAuthenticated ? children : <Navigate to="/login" />;
+  };
 
   return (
     <div className="App">
       <div className="min-h-screen">
-        <ProductProvider>
-          <BrowserRouter>
-            <Header />
-            <main className="container mx-auto py-8">
-              <Routes>
-                <Route path="/" element={<Navigate to="/login" />} />
-                <Route path="/login" element={<Login />} />
-                <Route path="/register" element={<Register />} />
-                <Route
-                  path="/product"
-                  element={
-                    isAuthenticated ? <ProductList /> : <Navigate to="/login" />
-                  }
-                />
-                <Route
-                  path="/product/:id"
-                  element={
-                    isAuthenticated ? (
-                      <ProductDetail />
-                    ) : (
-                      <Navigate to="/Login" />
-                    )
-                  }
-                />
+        <AuthProvider>
+          <ProductProvider>
+            <BrowserRouter>
+              <Header />
+              <main className="container mx-auto py-8">
+                <Routes>
+                  <Route path="/" element={<Navigate to="/login" />} />
+                  <Route path="/login" element={<Login />} />
+                  <Route path="/register" element={<Register />} />
+                  <Route
+                    path="/product"
+                    element={
+                      <ProtectedRoute>
+                        <ProductList />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
+                    path="/product/:id"
+                    element={
+                      <ProtectedRoute>
+                        <ProductDetail />
+                      </ProtectedRoute>
+                    }
+                  />
 
-                <Route
-                  path="/cart"
-                  element={
-                    isAuthenticated ? <Cart /> : <Navigate to="/Login" />
-                  }
-                />
-                <Route
-                  path="/favorite"
-                  element={
-                    isAuthenticated ? <Favorite /> : <Navigate to="/Login" />
-                  }
-                />
-                <Route path="*" element={<NotFound />} />
-              </Routes>
-            </main>
-            <Footer />
-          </BrowserRouter>
-        </ProductProvider>
+                  <Route
+                    path="/cart"
+                    element={
+                      <ProtectedRoute>
+                        <Cart />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
+                    path="/favorite"
+                    element={
+                      <ProtectedRoute>
+                        <Favorite />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route path="*" element={<NotFound />} />
+                </Routes>
+              </main>
+              <Footer />
+            </BrowserRouter>
+          </ProductProvider>
+        </AuthProvider>
       </div>
     </div>
   );
