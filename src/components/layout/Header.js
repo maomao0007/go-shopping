@@ -2,11 +2,12 @@ import React, { useState, useContext } from "react";
 import { ShoppingCart, Heart, User, Menu, X } from "lucide-react";
 import { Link } from "react-router-dom";
 import { ProductContext } from "../../contexts/ProductContext";
+import { useAuth } from "../../contexts/AuthContext";
 
 export const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { cart = [], favorites = {} } = useContext(ProductContext);
-  const isAuthenticated = false;
+  const { isAuthenticated } = useAuth(); 
 
   return (
     <header className="bg-white shadow-md relative">
@@ -23,7 +24,7 @@ export const Header = () => {
           {/* Logo */}
           <div className="flex items-center">
             <Link
-              to="/"
+              to={isAuthenticated ? "/product" : "/login"}
               className="text-xl sm:text-2xl font-bold text-gray-800"
             >
               GoShopping

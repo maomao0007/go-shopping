@@ -3,14 +3,18 @@ const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [user, setUser] = useState(null);
+
   useEffect(() => {
     const token = localStorage.getItem("token");
-    if (token) {
+    const userData = localStorage.getItem("user");
+    if (token && userData) {
       setIsAuthenticated(true);
+      setUser(JSON.parse(userData));
     }
   }, []);
   return (
-    <AuthContext.Provider value={{ isAuthenticated, setIsAuthenticated }}>
+    <AuthContext.Provider value={{ isAuthenticated, setIsAuthenticated, user, setUser }}>
       {children}
     </AuthContext.Provider>
   );

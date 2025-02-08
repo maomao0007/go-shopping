@@ -1,16 +1,18 @@
 import React, { useState } from "react";
 import api from "../../api";
-import { Link, useNavigate } from "react-router-dom"; 
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../../contexts/AuthContext";
 
 function Login() {
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
+  const { setIsAuthenticated } = useAuth();
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
 
-   const [error, setError] = useState("");
-   const [success, setSuccess] = useState("");
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
 
   const handleChange = (e) => {
     setFormData({
@@ -19,49 +21,46 @@ function Login() {
     });
     setError("");
     setSuccess("");
-  }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
     setSuccess("");
 
-     if (!formData.email || !formData.password) {
-       setError("Email and password are required");
-       return;
-     }
+    if (!formData.email || !formData.password) {
+      setError("Email and password are required");
+      return;
+    }
 
-     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-     if (!emailRegex.test(formData.email)) {
-       setError("Please enter a valid email address");
-       return;
-     }
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(formData.email)) {
+      setError("Please enter a valid email address");
+      return;
+    }
 
     try {
-      const response = await api.post(
-        "/api/auth/login",
-        formData
-      );
+      const response = await api.post("/api/auth/login", formData);
 
-        if (response.data.token) {
-          localStorage.setItem("token", response.data.token);
-        }
-        if (response.data.user) {
-          localStorage.setItem("user", JSON.stringify(response.data.user));
-        }
-
-      if (response.data.status === "success") {
-      setSuccess("Login successful! Redirecting...");
-      
-      setTimeout(() => navigate("/product"), 1500);
+      if (response.data.token) {
+        localStorage.setItem("token", response.data.token);
+        setIsAuthenticated(true);
+      }
+      if (response.data.user) {
+        localStorage.setItem("user", JSON.stringify(response.data.user));
       }
 
+      if (response.data.status === "success") {
+        setSuccess("Login successful! Redirecting...");
+
+        setTimeout(() => navigate("/product"), 1500);
+      }
     } catch (error) {
-       if (error.response?.data?.message === "Invalid credentials") {
-         setError("Email or password was incorrect");
-       } else {
-         setError("Login failed:", error.response.message);
-       }
+      if (error.response?.data?.message === "Invalid credentials") {
+        setError("Email or password was incorrect");
+      } else {
+        setError("Login failed", error.response.message);
+      }
     }
   };
 

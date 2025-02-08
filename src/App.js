@@ -12,6 +12,7 @@ import Favorite from "./components/Favorite";
 import Login from "./components/auth/Login";
 import Register from "./components/auth/Register";
 import NotFound from "./components/NotFound";
+import Account from "./components/Account";
 import React, { useEffect } from "react";
 import { AuthProvider, useAuth } from "./contexts/AuthContext";
 
@@ -34,6 +35,14 @@ function App() {
                   <Route path="/" element={<Navigate to="/login" />} />
                   <Route path="/login" element={<Login />} />
                   <Route path="/register" element={<Register />} />
+                  <Route
+                    path="/account"
+                    element={
+                      <ProtectedRoute>
+                        <Account />
+                      </ProtectedRoute>
+                    }
+                  />
                   <Route
                     path="/product"
                     element={

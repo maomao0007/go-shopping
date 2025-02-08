@@ -1,8 +1,11 @@
 import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import { ProductContext } from "../contexts/ProductContext";
+import { useAuth } from "../contexts/AuthContext";
 
 const Cart = () => {
+
+  const { isAuthenticated } = useAuth();
   const {
     cart = [],
     removeFromCart,
@@ -46,11 +49,11 @@ const handleDecreaseQuantity = (itemId) => {
         <h1 className="text-2xl font-bold mb-6">Shopping Cart</h1>
         <div>
           <div className="text-center py-8">
-            <p p className="text-gray-500 mb-4">
+            <p className="text-gray-500 mb-4">
               Your cart is empty
             </p>
             <Link
-              to="/"
+              to={isAuthenticated ? "/product" : "/login"}
               className="mt-4 inline-block text-blue-500 hover:text-blue-600"
             >
               Continue Shopping
@@ -110,10 +113,16 @@ const handleDecreaseQuantity = (itemId) => {
       <div className="mt-8 border-t pt-4">
         <div className="text-xl font-bold">Total: ${total.toFixed(2)}</div>
         <div className="mt-4 flex gap-4">
-          <Link to="/" className="text-blue-500 hover:text-blue-600">
+          <Link
+            to={isAuthenticated ? "/product" : "/login"}
+            className="text-blue-500 hover:text-blue-600"
+          >
             Continue Shopping
           </Link>
-          <button className="bg-green-500 text-white px-6 py-2 rounded hover:bg-green-600 transition-colors">
+          <button
+            className="bg-green-500 text-white px-6 py-2 rounded hover:bg-green-600 transition-colors cursor-not-allowed opacity-50"
+            disabled
+          >
             Checkout
           </button>
         </div>

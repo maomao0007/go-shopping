@@ -1,11 +1,19 @@
 import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import { ProductContext } from "../contexts/ProductContext";
-import { Heart } from "lucide-react";
+import { Heart, ShoppingCart } from "lucide-react";
+import { useAuth } from "../contexts/AuthContext";
 
 export default function Favorite() {
 
-   const { products, favorites, toggleFavorite } = useContext(ProductContext);
+  const { isAuthenticated } = useAuth();
+
+   const {
+     products,
+     addToCart,
+     favorites,
+     toggleFavorite,
+   } = useContext(ProductContext);
 
   const favoriteProducts = products.filter(product => favorites[product.id]);
 
@@ -17,7 +25,7 @@ export default function Favorite() {
         <div className="text-center py-8">
           <p className="text-gray-500 mb-4">Your wishlist is empty</p>
           <Link
-            to="/"
+            to={isAuthenticated ? "/product" : "/login"}
             className="mt-4 inline-block text-blue-500 hover:text-blue-600"
           >
             Continue Shopping
@@ -45,6 +53,16 @@ export default function Favorite() {
                     className="p-2"
                   >
                     <Heart size={24} color="pink" fill="pink" />
+                  </button>
+                  <button
+                    onClick={() => {
+                      addToCart(product);
+                      alert("Successfully added to cart!");
+                    }}
+                    className="flex items-center gap-2 bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition duration-200"
+                  >
+                    <ShoppingCart className="w-5 h-5" />
+                    Add to Cart
                   </button>
                 </div>
               </div>
