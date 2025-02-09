@@ -3,7 +3,7 @@ import { useAuth } from "../contexts/AuthContext";
 import { User, Mail } from "lucide-react";
 
 export default function Account() {
-   const { user } = useAuth();
+  const { user } = useAuth();
 
   return (
     <div className="p-4 max-w-7xl mx-auto">
@@ -11,11 +11,11 @@ export default function Account() {
       <div className="space-y-4">
         <div className="flex justify-center space-x-2">
           <User size={24} color="#3B82F6" fill="#3B82F6" />
-          <span>{user?.username}</span>
+          <span>{user.username}</span>
         </div>
         <div className="flex justify-center space-x-2">
           <Mail size={24} color="#3B82F6" />
-          <span>{user?.email}</span>
+          <span>{user.email}</span>
         </div>
       </div>
     </div>

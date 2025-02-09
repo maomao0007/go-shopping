@@ -3,6 +3,7 @@ import { ShoppingCart, Heart, User, Menu, X } from "lucide-react";
 import { Link } from "react-router-dom";
 import { ProductContext } from "../../contexts/ProductContext";
 import { useAuth } from "../../contexts/AuthContext";
+import Logout from "../auth/Logout";
 
 export const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -66,6 +67,11 @@ export const Header = () => {
                   </span>
                 )}
               </Link>
+              <Logout
+                className="relative hover:text-blue-500 transition-colors"
+                title="Log Out"
+                isMobile={false}
+              />
             </div>
           ) : null}
 
@@ -134,6 +140,13 @@ export const Header = () => {
                   </div>
                   <span className="text-gray-700">Shopping Cart</span>
                 </Link>
+              </li>
+              <li>
+                <Logout
+                  className="flex items-center space-x-3 p-2 hover:bg-gray-50 rounded-lg transition-colors"
+                  onClick={() => setIsMenuOpen(false)}
+                  isMobile={true}
+                />
               </li>
             </ul>
           </nav>

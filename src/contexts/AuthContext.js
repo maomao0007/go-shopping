@@ -13,8 +13,17 @@ export const AuthProvider = ({ children }) => {
       setUser(JSON.parse(userData));
     }
   }, []);
+
+  const logout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    setIsAuthenticated(false);
+    setUser(null);
+  };
   return (
-    <AuthContext.Provider value={{ isAuthenticated, setIsAuthenticated, user, setUser }}>
+    <AuthContext.Provider
+      value={{ isAuthenticated, setIsAuthenticated, user, setUser, logout }}
+    >
       {children}
     </AuthContext.Provider>
   );
