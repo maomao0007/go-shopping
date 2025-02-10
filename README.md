@@ -46,9 +46,11 @@ npm start
 - Cart: Manage your shopping cart
 
 ## Screenshot
+![Login_Page](https://github.com/user-attachments/assets/22629a25-36f5-492c-a0dd-eafdeae6a884)
 ![Homepage](https://github.com/user-attachments/assets/1fe15fc2-b372-4cfb-8541-19d72a7ac092)
 ![Wishlist](https://github.com/user-attachments/assets/ca1780a7-ea40-4ee3-bfe4-8a545e7b9871)
 ![Cart](https://github.com/user-attachments/assets/fe72a76f-b2a7-4ed6-885a-17a4529f704c)
+![Account_Information](https://github.com/user-attachments/assets/6b168d8d-7877-48fd-93c5-0f0d94600259)
 
 
 
