@@ -26,9 +26,9 @@ function App() {
   return (
     <div className="App">
       <div className="min-h-screen">
-        <AuthProvider>
-          <ProductProvider>
-            <BrowserRouter>
+        <BrowserRouter>
+          <AuthProvider>
+            <ProductProvider>
               <Header />
               <main className="container mx-auto py-8">
                 <Routes>
@@ -80,9 +80,9 @@ function App() {
                 </Routes>
               </main>
               <Footer />
-            </BrowserRouter>
-          </ProductProvider>
-        </AuthProvider>
+            </ProductProvider>
+          </AuthProvider>
+        </BrowserRouter>
       </div>
     </div>
   );
