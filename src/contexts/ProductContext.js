@@ -113,7 +113,7 @@ export const ProductProvider = ({ children }) => {
       setCart([...cart.slice(0, index), ...cart.slice(index + 1)]);
     }
   };
-  
+
   const filteredProducts = useMemo(() => {
     return products.filter((product) => {
       const matchesSearch =
@@ -127,7 +127,7 @@ export const ProductProvider = ({ children }) => {
 
   const categories = useMemo(() => {
     return ["All", ...new Set(products.map((p) => p.category))];
-  },[products]);
+  }, [products]);
 
   return (
     <ProductContext.Provider
@@ -143,7 +143,7 @@ export const ProductProvider = ({ children }) => {
         addToCart,
         removeFromCart,
         favorites,
-        toggleFavorite
+        toggleFavorite,
       }}
     >
       {children}
