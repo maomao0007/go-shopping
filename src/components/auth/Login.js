@@ -59,7 +59,7 @@ function Login() {
       if (error.response?.data?.message === "Invalid credentials") {
         setError("Email or password was incorrect");
       } else {
-        setError("Login failed", error.response.message);
+        setError("Login failed", error.response?.message);
       }
     }
   };

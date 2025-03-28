@@ -1,4 +1,4 @@
-import React, { useState, createContext } from "react";
+import React, { useState, useEffect, useMemo, createContext } from "react";
 
 export const ProductContext = createContext();
 
@@ -86,11 +86,15 @@ const initialProducts = [
 ];
 
 export const ProductProvider = ({ children }) => {
-  const [products] = useState(initialProducts);
+  const [products, setProducts] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [cart, setCart] = useState([]);
   const [favorites, setFavorites] = useState({});
+
+  useEffect(() => {
+    setProducts(initialProducts);
+  }, []);
 
   const toggleFavorite = (productId) => {
     setFavorites((prev) => ({
@@ -109,17 +113,22 @@ export const ProductProvider = ({ children }) => {
       setCart([...cart.slice(0, index), ...cart.slice(index + 1)]);
     }
   };
+  
+  const filteredProducts = useMemo(() => {
+    console.log("被觸發");
+    return products.filter((product) => {
+      const matchesSearch =
+        product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        product.description.toLowerCase().includes(searchTerm.toLowerCase());
+      const matchesCategory =
+        selectedCategory === "All" || product.category === selectedCategory;
+      return matchesSearch && matchesCategory;
+    });
+  }, [products, searchTerm, selectedCategory]);
 
-  const filteredProducts = products.filter((product) => {
-    const matchesSearch =
-      product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      product.description.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesCategory =
-      selectedCategory === "All" || product.category === selectedCategory;
-    return matchesSearch && matchesCategory;
-  });
-
-  const categories = ["All", ...new Set(products.map((p) => p.category))];
+  const categories = useMemo(() => {
+    return ["All", ...new Set(products.map((p) => p.category))];
+  },[products]);
 
   return (
     <ProductContext.Provider
